@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Calculator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    .calculator {
+      width: 220px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+    }
+
+    .display {
+      width: 100%;
+      height: 40px;
+      margin-bottom: 10px;
+      text-align: right;
+      padding: 0 10px;
+      font-size: 24px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .buttons button {
+      padding: 15px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+      transition: background-color 0.2s;
+    }
+
+    .buttons button:hover {
+      background-color: #555;
+    }
+
+    .buttons .operator {
+      background-color: #f0ad4e;
+    }
+
+    .buttons .operator:hover {
+      background-color: #ec971f;
+    }
+
+    .buttons .equal {
+      background-color: #5cb85c;
+      grid-column: span 2;
+    }
+
+    .buttons .equal:hover {
+      background-color: #4cae4c;
+    }
+
+    .buttons .clear {
+      background-color: #d9534f;
+      grid-column: span 2;
+    }
+
+    .buttons .clear:hover {
+      background-color: #c9302c;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button onclick="appendNumber(7)">7</button>
+      <button onclick="appendNumber(8)">8</button>
+      <button onclick="appendNumber(9)">9</button>
+      <button class="operator" onclick="chooseOperator('/')">/</button>
+
+      <button onclick="appendNumber(4)">4</button>
+      <button onclick="appendNumber(5)">5</button>
+      <button onclick="appendNumber(6)">6</button>
+      <button class="operator" onclick="chooseOperator('*')">*</button>
+
+      <button onclick="appendNumber(1)">1</button>
+      <button onclick="appendNumber(2)">2</button>
+      <button onclick="appendNumber(3)">3</button>
+      <button class="operator" onclick="chooseOperator('-')">-</button>
+
+      <button onclick="appendNumber(0)">0</button>
+      <button onclick="appendDecimal()">.</button>
+      <button class="equal" onclick="calculate()">=</button>
+      <button class="operator" onclick="chooseOperator('+')">+</button>
+
+      <button class="clear" onclick="clearDisplay()">C</button>
+    </div>
+  </div>
+
+  <script>
+    let displayValue = '';
+    let currentOperator = null;
+    let firstOperand = null;
+    let shouldResetDisplay = false;
+
+    const display = document.getElementById('display');
+
+    function updateDisplay() {
+      display.textContent = displayValue || '0';
+    }
+
+    function appendNumber(number) {
+      if (shouldResetDisplay) {
+        displayValue = '';
+        shouldResetDisplay = false;
+      }
+      displayValue += number;
+      updateDisplay();
+    }
+
+    function appendDecimal() {
+      if (shouldResetDisplay) {
+        displayValue = '0';
+        shouldResetDisplay = false;
+      }
+      if (!displayValue.includes('.')) {
+        displayValue += '.';
+      }
+      updateDisplay();
+    }
+
+    function chooseOperator(operator) {
+      if (currentOperator) calculate();
+      firstOperand = parseFloat(displayValue);
+      currentOperator = operator;
+      shouldResetDisplay = true;
+    }
+
+    function calculate() {
+      if (currentOperator === null) return;
+      const secondOperand = parseFloat(displayValue);
+      switch (currentOperator) {
+        case '+':
+          displayValue = (firstOperand + secondOperand).toString();
+          break;
+        case '-':
+          displayValue = (firstOperand - secondOperand).toString();
+          break;
+        case '*':
+          displayValue = (firstOperand * secondOperand).toString();
+          break;
+        case '/':
+          displayValue = secondOperand !== 0 ? (firstOperand / secondOperand).toString() : 'Error';
+          break;
+      }
+      currentOperator = null;
+      firstOperand = null;
+      shouldResetDisplay = true;
+      updateDisplay();
+    }
+
+    function clearDisplay() {
+      displayValue = '';
+      currentOperator = null;
+      firstOperand = null;
+      updateDisplay();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Audio Player</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    .audio-player {
+      width: 300px;
+      padding: 20px;
+      text-align: center;
+      background-color: #333;
+      color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .audio-player h2 {
+      margin: 0 0 10px;
+    }
+
+    .audio-player button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #444;
+      color: #fff;
+    }
+
+    .audio-player button:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="audio-player">
+    <h2>My Audio Player</h2>
+    <audio id="audio" src="audio-file.mp3"></audio>
+    <div>
+      <button onclick="playAudio()">Play</button>
+      <button onclick="pauseAudio()">Pause</button>
+      <button onclick="stopAudio()">Stop</button>
+    </div>
+    <p id="status">Status: Stopped</p>
+  </div>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const status = document.getElementById('status');
+
+    function playAudio() {
+      audio.play();
+      status.textContent = 'Status: Playing';
+    }
+
+    function pauseAudio() {
+      audio.pause();
+      status.textContent = 'Status: Paused';
+    }
+
+    function stopAudio() {
+      audio.pause();
+      audio.currentTime = 0;
+      status.textContent = 'Status: Stopped';
+    }
+  </script>
+</body>
+</html>
